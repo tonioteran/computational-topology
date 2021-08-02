@@ -14,7 +14,8 @@ FetchContent_MakeAvailable(googletest)
 
 # Graph library
 set(GRAPH_SRCS
-  graphs/disjoint_set_system.cc)
+  graphs/disjoint_set_system.cc
+  graphs/graphviz_utils.cc)
 add_library(topo-graphs-lib STATIC ${GRAPH_SRCS})
 target_include_directories(topo-graphs-lib PUBLIC graphs)
 target_compile_options(topo-graphs-lib PRIVATE -Wall)
