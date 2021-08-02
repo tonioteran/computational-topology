@@ -16,7 +16,11 @@ int DisjointSetSystem::FindSet(int index) const {
 }
 
 void DisjointSetSystem::Union(int index_i, int index_j) {
-  // TODO(tonioteran) Implement.
+  const int set_i = FindSet(index_i);
+  const int set_j = FindSet(index_j);
+  if (set_i != set_j) {
+    system_[set_i].parent = &system_[set_j];
+  }
 }
 
 int DisjointSetSystem::NumSets() const {

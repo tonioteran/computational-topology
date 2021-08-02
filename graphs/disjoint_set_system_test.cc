@@ -40,15 +40,53 @@ TEST(DisjointSetSystemTest, AddEdgeMultiple) {
   // Build the following tree:     1
   //                              / \
   //                             0   2
-  sys.AddEdge(/*parent_index=*/1, /*child_index*/0);
+  sys.AddEdge(/*parent_index=*/1, /*child_index*/ 0);
   EXPECT_EQ(sys.NumSets(), 2);
   EXPECT_EQ(sys.FindSet(0), 1);
   EXPECT_EQ(sys.FindSet(1), 1);
   EXPECT_EQ(sys.FindSet(2), 2);
 
-  sys.AddEdge(/*parent_index=*/1, /*child_index*/2);
+  sys.AddEdge(/*parent_index=*/1, /*child_index*/ 2);
   EXPECT_EQ(sys.NumSets(), 1);
   EXPECT_EQ(sys.FindSet(0), 1);
   EXPECT_EQ(sys.FindSet(1), 1);
   EXPECT_EQ(sys.FindSet(2), 1);
+}
+
+TEST(DisjointSetSystemTest, UnionFromLeaves) {
+  const int num_vertices = 5;
+  topo::DisjointSetSystem sys{num_vertices};
+  // Build the following tree:       3
+  //                                . \
+  //                               1   4
+  //                              / \
+  //                             0   2
+  // by joining the {0, 1, 2} and the {3, 4} sets.
+  sys.AddEdge(/*parent_index=*/1, /*child_index*/ 0);
+  sys.AddEdge(/*parent_index=*/1, /*child_index*/ 2);
+  sys.AddEdge(/*parent_index=*/3, /*child_index*/ 4);
+  EXPECT_EQ(sys.NumSets(), 2);
+  sys.Union(0, 4);
+  EXPECT_EQ(sys.NumSets(), 1);
+
+  // Now check the actual edges from the union.
+  const std::vector<topo::Vertex> vertices = sys.Vertices();
+  EXPECT_TRUE(vertices[1].parent != nullptr);
+  EXPECT_EQ(vertices[1].parent->index, 3);
+}
+
+TEST(DisjointSetSystemTest, UnionFromRoots) {
+  const int num_vertices = 5;
+  topo::DisjointSetSystem sys{num_vertices};
+  sys.AddEdge(/*parent_index=*/1, /*child_index*/ 0);
+  sys.AddEdge(/*parent_index=*/1, /*child_index*/ 2);
+  sys.AddEdge(/*parent_index=*/3, /*child_index*/ 4);
+  EXPECT_EQ(sys.NumSets(), 2);
+  sys.Union(1, 4);
+  EXPECT_EQ(sys.NumSets(), 1);
+
+  // Now check the actual edges from the union.
+  const std::vector<topo::Vertex> vertices = sys.Vertices();
+  EXPECT_TRUE(vertices[1].parent != nullptr);
+  EXPECT_EQ(vertices[1].parent->index, 3);
 }

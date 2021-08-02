@@ -1,4 +1,5 @@
-// Disjoint set systems.
+// Disjoint set systems, based on [1, pp. 6-8].
+// [1] Edelsbrunner & Harer (2010). Computational topology.
 // Antonio Teran (toniioteran@gmail.com)
 
 #ifndef GRAPHS_DISJOINT_SET_SYSTEMS_H_
@@ -30,6 +31,9 @@ class DisjointSetSystem {
 
   // Places a directed edge between the parent and child vertices.
   void AddEdge(int parent_index, int child_index);
+
+  // Return the underlying data structure with the graph's vertices.
+  inline const std::vector<Vertex>& Vertices() const { return system_; }
 
  private:
   // Data structure for the disjoint set system.
