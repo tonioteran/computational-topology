@@ -15,17 +15,17 @@ FetchContent_MakeAvailable(googletest)
 # Graph library
 set(GRAPH_SRCS
   graphs/disjoint_set_system.cc)
-add_library(topo-graph-lib STATIC ${GRAPH_SRCS})
-target_include_directories(topo-graph-lib PUBLIC graphs)
-target_compile_options(topo-graph-lib PRIVATE -Wall)
+add_library(topo-graphs-lib STATIC ${GRAPH_SRCS})
+target_include_directories(topo-graphs-lib PUBLIC graphs)
+target_compile_options(topo-graphs-lib PRIVATE -Wall)
 # Make library reachable by other cmake projects.
-export(PACKAGE topo-graph-lib)
-export(TARGETS topo-graph-lib FILE topo-graph-libConfig.cmake)
+export(PACKAGE topo-graphs-lib)
+export(TARGETS topo-graphs-lib FILE topo-graphs-libConfig.cmake)
 
 # Unit testing.
 enable_testing()
 include(GoogleTest)
 # -- Graph library.
-add_executable(disjoint_set_system_test disjoint_set_system_test.cc)
+add_executable(disjoint_set_system_test graphs/disjoint_set_system_test.cc)
 target_link_libraries(disjoint_set_system_test topo-graphs-lib gtest_main)
 gtest_discover_tests(disjoint_set_system_test)

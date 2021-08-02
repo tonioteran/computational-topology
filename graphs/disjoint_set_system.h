@@ -4,6 +4,8 @@
 #ifndef GRAPHS_DISJOINT_SET_SYSTEMS_H_
 #define GRAPHS_DISJOINT_SET_SYSTEMS_H_
 
+#include <vector>
+
 namespace topo {
 
 struct Vertex {
@@ -23,8 +25,13 @@ class DisjointSetSystem {
   // Replaces index i's and j's sets by the union of both.
   void Union(int index_i, int index_j);
 
+  // Returns the number of separate sets in the system.
+  int NumSets() const;
+
+  // Places a directed edge between the parent and child vertices.
+  void AddEdge(int parent_index, int child_index);
+
  private:
-  const int num_vertices_;
   // Data structure for the disjoint set system.
   std::vector<Vertex> system_;
 };
