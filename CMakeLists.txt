@@ -15,9 +15,10 @@ FetchContent_MakeAvailable(googletest)
 # Graph library
 set(GRAPH_SRCS
   graphs/disjoint_set_system.cc
+  graphs/planar_graph.cc
   graphs/graphviz_utils.cc)
 add_library(topo-graphs-lib STATIC ${GRAPH_SRCS})
-target_include_directories(topo-graphs-lib PUBLIC graphs)
+target_include_directories(topo-graphs-lib PUBLIC .)
 target_compile_options(topo-graphs-lib PRIVATE -Wall)
 # Make library reachable by other cmake projects.
 export(PACKAGE topo-graphs-lib)
