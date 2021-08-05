@@ -31,3 +31,7 @@ include(GoogleTest)
 add_executable(disjoint_set_system_test graphs/disjoint_set_system_test.cc)
 target_link_libraries(disjoint_set_system_test topo-graphs-lib gtest_main)
 gtest_discover_tests(disjoint_set_system_test)
+
+add_executable(planar_graph_test graphs/planar_graph_test.cc)
+target_link_libraries(planar_graph_test topo-graphs-lib gtest_main)
+gtest_discover_tests(planar_graph_test)
