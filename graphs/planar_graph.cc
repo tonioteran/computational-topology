@@ -7,20 +7,27 @@
 namespace topo {
 
 PlanarGraph::PlanarGraph(size_t outer_vertices, size_t inner_vertices)
-    : outer_vertices_(outer_vertices), inner_vertices_(inner_vertices) {}
+    : outer_vertices_(outer_vertices),
+      inner_vertices_(inner_vertices),
+      n_(inner_vertices_ + outer_vertices_) {}
 
 size_t PlanarGraph::Degree(size_t vertex) const {
-  if (vertex >= outer_vertices_ + inner_vertices_)
-    throw std::invalid_argument("Out of bounds");
+  if (vertex >= n_) throw std::invalid_argument("Out of bounds");
   return (vertex_edges_map_.find(vertex) == vertex_edges_map_.end())
              ? 0
              : vertex_edges_map_.at(vertex).size();
 }
 
+const std::vector<PlanarGraph::Edge*>& PlanarGraph::Edges(size_t vertex) const {
+  return vertex_edges_map_.at(vertex);
+}
+
 void PlanarGraph::AddEdge(size_t i, size_t j) {
-  unique_edges_.emplace_back(i, j);
-  vertex_edges_map_[i].push_back(&(unique_edges_.back()));
-  vertex_edges_map_[j].push_back(&(unique_edges_.back()));
+  if (i >= n_) throw std::invalid_argument("Out of bounds, tail");
+  if (j >= n_) throw std::invalid_argument("Out of bounds, head");
+  auto& e = unique_edges_.emplace_back(i, j);
+  vertex_edges_map_[i].push_back(&e);
+  vertex_edges_map_[j].push_back(&e);
 }
 
 }  // namespace topo

@@ -6,6 +6,7 @@
 #define GRAPHS_PLANAR_GRAPH_H_
 
 #include <cstdlib>
+#include <list>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -20,20 +21,24 @@ namespace topo {
 // Not designed for optimized performance. Mainly for plotting and ease of
 // prototyping purposes.
 class PlanarGraph {
+  using Edge = std::pair<size_t, size_t>;
+
  public:
   PlanarGraph(size_t outer_vertices, size_t inner_vertices);
 
   // Returns the degree for `vertex`.
   size_t Degree(size_t vertex) const;
 
+  const std::vector<Edge*>& Edges(size_t vertex) const;
+
   // Add a connection between vertex `i` to vertex `j`.
   void AddEdge(size_t i, size_t j);
 
  private:
-  using Edge = std::pair<int, int>;
   const size_t outer_vertices_;
   const size_t inner_vertices_;
-  std::vector<Edge> unique_edges_;
+  const size_t n_;
+  std::list<Edge> unique_edges_;
   std::unordered_map<size_t, std::vector<Edge*>> vertex_edges_map_;
 };
 
