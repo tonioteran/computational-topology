@@ -29,10 +29,16 @@ class PlanarGraph {
   // Returns the degree for `vertex`.
   size_t Degree(size_t vertex) const;
 
+  // Returns all edges for a given vertex.
   const std::vector<Edge*>& Edges(size_t vertex) const;
 
   // Add a connection between vertex `i` to vertex `j`.
   void AddEdge(size_t i, size_t j);
+
+  // Getters for vertex information.
+  inline size_t OuterVertices() const { return outer_vertices_; }
+  inline size_t InnerVertices() const { return inner_vertices_; }
+  inline size_t N() const { return n_; }
 
  private:
   const size_t outer_vertices_;
