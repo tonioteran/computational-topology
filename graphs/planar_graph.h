@@ -21,9 +21,9 @@ namespace topo {
 // Not designed for optimized performance. Mainly for plotting and ease of
 // prototyping purposes.
 class PlanarGraph {
+ public:
   using Edge = std::pair<size_t, size_t>;
 
- public:
   PlanarGraph(size_t outer_vertices, size_t inner_vertices);
 
   // Returns the degree for `vertex`.
