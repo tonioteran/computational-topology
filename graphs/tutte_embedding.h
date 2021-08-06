@@ -6,6 +6,7 @@
 #define GRAPHS_TUTTE_EMBEDDING_H_
 
 #include <Eigen/Core>
+#include <tuple>
 
 #include "graphs/planar_graph.h"
 
@@ -21,8 +22,10 @@ Eigen::Matrix<double, 2, Eigen::Dynamic> FindTutteEmbedding(
 Eigen::Matrix<double, 2, Eigen::Dynamic> GetBoundaryPositions(
     size_t outer_vertices);
 
-// TODO(tonioteran) Write description.
-Eigen::MatrixXd BuildTutteMatrix(const PlanarGraph& G);
+// Returns the Tutte matrix, and the RHS vectors for the X and Y systems.
+std::tuple<Eigen::MatrixXd, Eigen::VectorXd, Eigen::VectorXd> BuildTutteSystem(
+    const PlanarGraph& G,
+    const Eigen::Matrix<double, 2, Eigen::Dynamic>& outer_positions);
 
 }  // namespace topo
 
