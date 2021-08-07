@@ -7,7 +7,9 @@
 
 #include "graphs/planar_graph.h"
 
-TEST(TutteEmbeddingTest, DrawingTest) {
+namespace {
+
+topo::PlanarGraph BuildTestGraph() {
   const size_t inner = 5;
   const size_t outer = 5;
   topo::PlanarGraph G(inner, outer);
@@ -53,8 +55,39 @@ TEST(TutteEmbeddingTest, DrawingTest) {
   // From vertex 8.
   G.AddEdge(8, 9);
 
+  return G;
+}
+
+}  // namespace
+
+TEST(TutteEmbeddingTest, TutteSystem) {
+  const topo::PlanarGraph G = BuildTestGraph();
+  const Eigen::Matrix<double, 2, Eigen::Dynamic> outer_positions =
+      topo::GetBoundaryPositions(G.OuterVertices());
+  const auto [A, Bx, By] = topo::BuildTutteSystem(G, outer_positions);
+
+  // Compare against ground truth example from MATLAB.
+  // clang-format off
+  const Eigen::MatrixXd A_ground_truth = ((Eigen::MatrixXd(5, 5) <<
+                1.0000,  -0.1667,  -0.1667,  -0.1667,  -0.1667,
+               -0.2500,   1.0000,  -0.2500,   0.0000,   0.0000,
+               -0.2000,  -0.2000,   1.0000,  -0.2000,   0.0000,
+               -0.2000,   0.0000,  -0.2000,   1.0000,  -0.2000,
+               -0.2500,   0.0000,   0.0000,  -0.2500,   1.0000).finished());
+  // clang-format on
+  EXPECT_TRUE(A.isApprox(A_ground_truth, 1e-4));
+}
+
+TEST(TutteEmbeddingTest, FullEmbeddingTest) {
+  const topo::PlanarGraph G = BuildTestGraph();
   const Eigen::Matrix<double, 2, Eigen::Dynamic> embedding =
       FindTutteEmbedding(G);
 
-  std::cout << embedding << std::endl;
+  // Compare against ground truth example from MATLAB.
+  const Eigen::MatrixXd embedding_ground_truth =
+      ((Eigen::MatrixXd(2, 10) << 0.3090, -0.8090, -0.8090, 0.3090, 1.0000,
+        -0.0714, -0.4592, -0.1472, 0.2947, 0.3831, 0.9511, 0.5878, -0.5878,
+        -0.9511, -0.0000, 0.2198, -0.0197, -0.2988, -0.1552, 0.2539)
+           .finished());
+  EXPECT_TRUE(embedding.isApprox(embedding_ground_truth, 1e-4));
 }
