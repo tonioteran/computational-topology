@@ -29,6 +29,9 @@ class PlanarGraph {
   // Returns the degree for `vertex`.
   size_t Degree(size_t vertex) const;
 
+  // Returns all available edges.
+  const std::list<Edge>& Edges() const { return unique_edges_; }
+
   // Returns all edges for a given vertex.
   const std::vector<Edge*>& Edges(size_t vertex) const;
 
