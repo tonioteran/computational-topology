@@ -6,9 +6,7 @@ Magically going from a pure topological structure to a 2D straight line
 embedding. Start with
 
 ```cpp
-const size_t inner = 5;
-const size_t outer = 5;
-topo::PlanarGraph G(inner, outer);
+topo::PlanarGraph G;
 
 // Add a bunch of edges.
 G.AddEdge(0, 1);  G.AddEdge(1, 2);  G.AddEdge(2, 6);  G.AddEdge(3, 8);
